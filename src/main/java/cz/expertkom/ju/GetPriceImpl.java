@@ -41,7 +41,7 @@ public class GetPriceImpl implements GetPriceInterface{
 						if((sPrice!=null)&&sPrice.contains("Kč")) {
 							if (!priceVATfound) {
 								priceVATfound=true;
-								this.productPrice.setPriceVAT(sPrice.replaceAll("[<u>/]", ""));
+								this.productPrice.setPriceWithVAT(sPrice.replaceAll("[<u>/]", ""));
 							} else {
 								priceWitoutVatfound=true;
 								this.productPrice.setPriceWithoutVAT(sPrice.replaceAll("[<u>/]", ""));
@@ -58,10 +58,11 @@ public class GetPriceImpl implements GetPriceInterface{
 		} catch (UnirestException e) {
 			System.out.println("Problém s načtenením stránky");
 			this.productPrice.setName("Problém s načtenením stránky:"+e.getLocalizedMessage());
-			this.productPrice.setPriceVAT("?????");
+			this.productPrice.setPriceWithVAT("?????");
 			this.productPrice.setPriceWithoutVAT("??????");
 			e.printStackTrace();
 		}
+		System.out.println(productPrice);
 		return this.productPrice;
 	}
 
