@@ -36,7 +36,6 @@ public class GetPriceImpl implements GetPriceInterface{
 							if (!priceVATfound) {
 								priceVATfound=true;
 								this.productPrice.setPriceVAT(sPrice.replaceAll("[<u>/]", ""));
-								System.out.println("cena nalezena");
 							} else {
 								priceWitoutVatfound=true;
 								this.productPrice.setPriceWithoutVAT(sPrice.replaceAll("[<u>/]", ""));
@@ -49,7 +48,6 @@ public class GetPriceImpl implements GetPriceInterface{
 					break;
 				}
 			} 
-			System.out.println("Produkt:"+this.productPrice.getName());
 			
 		
 		} catch (UnirestException e) {
