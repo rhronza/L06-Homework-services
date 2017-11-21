@@ -18,17 +18,23 @@ public class GetPriceImpl implements GetPriceInterface{
 		final String WEB_PAGE_DOWNLOAD = "https://"+valueURI;
 
 		try {
+			/* načtení stránky do proměnné typu String */
 			String stringDownloadedWebPage = Unirest.get(WEB_PAGE_DOWNLOAD).asString().getBody();
+			/* split podle znaku apostrofu: */
 			String[] listStringSplit = stringDownloadedWebPage.split("'");
+			
 			boolean productFound = false;
 			boolean priceVATfound = false;
 			boolean priceWitoutVatfound = false;
 			
+			/* iterace pole vzniklého splitem */ 
 			for (String sProduct: listStringSplit) {
+				/* pokud řetez končí ".html" - jedná se o název výrobku*/ 
 				if (sProduct.endsWith(".html")&& !productFound) {
 					this.productPrice.setName(sProduct);
 					productFound=true;
 				}
+				/* jestliže následující řetez obsahuje "cena:", pak se provede splitování podle "span" a odstraněním znaků "<u>/" vznikne cena v Kč */   
 				if (productFound &&(sProduct.contains("cena:"))) {
 					String[] listStringSplitPrice = sProduct.split("span");
 					for (String sPrice: listStringSplitPrice) {
@@ -48,7 +54,6 @@ public class GetPriceImpl implements GetPriceInterface{
 					break;
 				}
 			} 
-			
 		
 		} catch (UnirestException e) {
 			System.out.println("Problém s načtenením stránky");
@@ -57,7 +62,6 @@ public class GetPriceImpl implements GetPriceInterface{
 			this.productPrice.setPriceWithoutVAT("??????");
 			e.printStackTrace();
 		}
-		System.out.println("konec - implementace service");
 		return this.productPrice;
 	}
 
